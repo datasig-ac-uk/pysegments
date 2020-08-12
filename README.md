@@ -4,7 +4,7 @@ Tools for working with intervals and dyadic segmentation in Python.
 ## Installation
 For now, the only way to install this package is to download from GitHub and build from source. This can be done using pip.
 ```
-python3 -m pip install https://github.com/datasig-ac-uk/pysegments.git
+python3 -m pip install git+https://github.com/datasig-ac-uk/pysegments.git
 ```
 
 ## Example usage
