@@ -14,6 +14,7 @@ segments_ext = Extension(
     sources = glob("src", "*.cpp"),
     depends = glob("src", "*.h"),
     include_dirs = ["Include"],
+    extra_compile_args=["-std=c++11"]
 )
 
 with open("README.md", "rt", encoding="utf-8") as f:

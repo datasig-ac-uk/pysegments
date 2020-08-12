@@ -15,7 +15,7 @@ Version 3. (See accompanying file License.txt)
 #define __DYADIC__
 
 #include <cmath> // ldexp() frexp() floor()
-#include <limits.h> // INT_MAX
+#include <limits> // numerical_limits
 #include <cassert> // assert
 #include <algorithm> // upper_bound
 #include <iostream>
