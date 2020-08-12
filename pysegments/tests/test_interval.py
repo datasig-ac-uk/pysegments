@@ -21,15 +21,15 @@ def unit_interval():
 
 def test_creation_and_member_access(unit_interval):
 
-    assert unit_interval.sup() == 1.0
-    assert unit_interval.inf() == 0.0
+    assert unit_interval.sup == 1.0
+    assert unit_interval.inf == 0.0
 
 
 def test_creation_reversed_items():
     intrvl = Interval(1.0, 0.0)
 
-    assert intrvl.sup() == 1.0
-    assert intrvl.inf() == 0.0
+    assert intrvl.sup == 1.0
+    assert intrvl.inf == 0.0
 
 def test_included_end(unit_interval):
     assert unit_interval.included_end() == 0.0

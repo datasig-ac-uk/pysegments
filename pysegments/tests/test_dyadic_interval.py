@@ -9,13 +9,13 @@ def unit_interval():
 
 
 def test_creation_and_member_access(unit_interval):
-    assert unit_interval.sup() == 1.0
-    assert unit_interval.inf() == 0.0
+    assert unit_interval.sup == 1.0
+    assert unit_interval.inf == 0.0
 
 def test_defaults():
     interval = DyadicInterval()
-    assert interval.inf() == 0.0
-    assert interval.sup() == 1.0
+    assert interval.inf == 0.0
+    assert interval.sup == 1.0
 
 DINTERVAL_PAR = [
     (0, 1),
@@ -33,8 +33,8 @@ def _f(kn):
 
 @pytest.mark.parametrize("interval, einf, esup", map(_f, DINTERVAL_PAR))
 def test_member_access(interval, einf, esup):
-    assert interval.sup() == esup
-    assert interval.inf() == einf
+    assert interval.sup == esup
+    assert interval.inf == einf
 
 
 @pytest.mark.parametrize("interval, einf, esup", map(_f, DINTERVAL_PAR))
@@ -64,15 +64,15 @@ def test_str_function(interval, expected):
 
 def test_flip_interval(unit_interval):
     unit_interval.flip_interval()
-    assert unit_interval.inf() == 1.0
-    assert unit_interval.sup() == 2.0
+    assert unit_interval.inf == 1.0
+    assert unit_interval.sup == 2.0
 
 def test_shrink_to_contained_end(unit_interval):
     interval = unit_interval.shrink_to_contained_end(1)
-    assert interval.sup() == 0.5
-    assert interval.inf() == 0.0
+    assert interval.sup == 0.5
+    assert interval.inf == 0.0
 
 def test_shrink_to_omitted_end(unit_interval):
     interval = unit_interval.shrink_to_omitted_end()
-    assert interval.sup() == 1.0
-    assert interval.inf() == 0.5
+    assert interval.sup == 1.0
+    assert interval.inf == 0.5

@@ -79,21 +79,57 @@ static PyMethodDef PyInterval_methods[] = {
         METH_NOARGS,
         "Get the included end of the interval."
     },
+    {nullptr}
+};
+
+static PyGetSetDef PyInterval_getset[] = {
     {
         "inf",
-        (PyCFunction) PyInterval_inf,
-        METH_NOARGS,
-        "Get the infimum of the interval."
+        (getter) PyInterval_inf,
+        nullptr,
+        "Get the infimum of the interval.",
+        nullptr
     },
     {
         "sup",
-        (PyCFunction) PyInterval_sup,
-        METH_NOARGS,
-        "Get the supremum of the interval."
+        (getter) PyInterval_sup,
+        nullptr,
+        "Get the supremum of the interval.",
+        nullptr
     },
     {nullptr}
 };
 
+PyDoc_STRVAR(PyInterval_docs, 
+"Clopen interval object.\n\
+\n\
+This class wraps the C++ \"basic_basic\" interval and exposes\n\
+its functionality in Python. The interval type is read-only from\n\
+the Python environment. The constructor takes two arguments, which\n\
+specify the end points of the interval. These do not need to be in\n\
+numerical order.\n\
+\n\
+The interval is Clopen, which means that the left hand boundary point\n\
+is included and the right hand boundary point is not included. This\n\
+gives an interval of the form `[a, b)`, where `a` is the supremum and \n\
+`b` is the infimum of the interval. The alignment of the interval\n\
+cannot currently be changed.\n\
+\n\
+Attributes:\n\
+    inf: the infimum of the interval (included in the interval).\n\
+    sup: the supremum of the interval (omitted from the interval).\n\
+\n\
+Args:\n\
+    a, b: boundary points of the interval.\n\
+\n\
+\n\
+Examples:\n\
+>>> Interval(0, 1)  # unit interval\n\
+Interval(0.000000, 1.000000)\n\
+>>> Interval(5, 2)  # [2, 5)\n\
+Interval(2.000000, 5.000000)\n\
+"
+);
 
 static PyTypeObject PyIntervalType = {
     PyVarObject_HEAD_INIT(nullptr, 0)
@@ -103,8 +139,9 @@ static PyTypeObject PyIntervalType = {
     .tp_repr = (reprfunc) PyInterval_repr,
     .tp_str = (reprfunc) PyInterval_str,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_doc = "Clopen interval",
+    .tp_doc = PyInterval_docs,
     .tp_methods = PyInterval_methods,
+    .tp_getset = PyInterval_getset,
     .tp_new = PyInterval_new,
 };
 
@@ -215,18 +252,6 @@ static PyMethodDef PyDyadicInterval_methods[] = {
         "Get included endpoint for the interval."
     },
     {
-        "sup", 
-        (PyCFunction) PyDyadicInterval_sup,
-        METH_NOARGS,
-        "Get the supremum of the interval."
-    },
-    {
-        "inf", 
-        (PyCFunction) PyDyadicInterval_inf,
-        METH_NOARGS,
-        "Get the infimum of the interval."
-    },
-    {
         "flip_interval", 
         (PyCFunction) PyDyadicInterval_flip_interval,
         METH_NOARGS,
@@ -295,7 +320,66 @@ static PyMethodDef PyDyadicInterval_methods[] = {
     {nullptr}
 };
 
+static PyGetSetDef PyDyadicInterval_getset[] = {
+    {
+        "sup", 
+        (getter) PyDyadicInterval_sup,
+        nullptr,
+        "Get the supremum of the interval.",
+        nullptr
+    },
+    {
+        "inf", 
+        (getter) PyDyadicInterval_inf,
+        nullptr,
+        "Get the infimum of the interval.",
+        nullptr
+    },
+    {nullptr}
+};
 
+PyDoc_STRVAR(PyDyadicInterval_docs, 
+"Clopen dyadic interval object.\n\
+\n\
+A (clopen) dyadic interval is of the form [k/2**n, (k+1)/2**n), where k\n\
+and n are integers. Such intervals are useful for partitioning real\n\
+intervals, since dyadic intervals have the property that any two that have\n\
+non-empty intersection must either coincide or one must be fully contained\n\
+within the other.\n\
+\n\
+This class wraps the C++ \"basic_dyadic_interval\" interval and exposes\n\
+its functionality in Python. The interval type is read-only from\n\
+the Python environment. The constructor takes two optional arguments,\n\
+which specify the numerator and exponent of 2 in the denominator.\n\
+\n\
+The interval is Clopen, which means that the left hand boundary point\n\
+is included and the right hand boundary point is not included. This\n\
+gives an interval of the form `[a, b)`, where `a` is the supremum and \n\
+`b` is the infimum of the interval. The alignment of the interval\n\
+cannot currently be changed.\n\
+\n\
+DyadicInterval objects support ordering operations using the total\n\
+order on the set of all dyadic intervals.\n\
+\n\
+Attributes:\n\
+    inf: the infimum of the interval (included in the interval).\n\
+    sup: the supremum of the interval (omitted from the interval).\n\
+\n\
+NOTE: The inf and sup are returned as floats, but are stored as dyadic\n\
+numbers with integer coefficients. Some precision may be lost when the\n\
+value of n is large.\n\
+\n\
+Args:\n\
+    k: value of the numerator (default=0)\n\
+    n: exponent of 2 in the denominator (default=0)\n\
+\n\
+Examples:\n\
+>>> print(DyadicInterval(0, 0))  # unit interval\n\
+[0.000000, 1.000000)\n\
+>>> print(DyadicInterval(5, 2))  # [5/4, 6/4)\n\
+[1.250000, 1.500000)\n\
+"
+);
 
 static PyTypeObject PyDyadicIntervalType = {
     PyVarObject_HEAD_INIT(nullptr, 0)
@@ -305,9 +389,10 @@ static PyTypeObject PyDyadicIntervalType = {
     .tp_repr = (reprfunc) PyDyadicInterval_repr,
     .tp_str = (reprfunc) PyDyadicInterval_str,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_doc = "Clopen Dyadic interval",
+    .tp_doc = PyDyadicInterval_docs,
     .tp_richcompare = (richcmpfunc) PyDyadicInterval_richcompare,
     .tp_methods = PyDyadicInterval_methods,
+    .tp_getset = PyDyadicInterval_getset,
     .tp_new = PyDyadicInterval_new,
 };
 
@@ -636,6 +721,53 @@ Py_to_dyadic_intervals(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 
+PyDoc_STRVAR(Py_segment_doc,
+"Segment a interval into a list of intervals according to a \n\
+characteristic function.\n\
+\n\
+This function takes four arguments: an interval, a callable, tolerance,\n\
+signal tolerance. It performs a dyadic segmentation of interval according\n\
+to the callable characteristic function up to the specified tolerance.\n\
+The callable should take an interval object and return a bool, which\n\
+indicates whether the interval should be included in the final\n\
+segmentation or not.\n\
+\n\
+The intervals returned returned are formed from a union of dyadic intervals\n\
+whose length are specified by tolerance. These intervals intervals span\n\
+the regions within the base interval in which the characteristic function\n\
+is true. (See examples below.)\n\
+\n\
+Args:\n\
+    base: base interval to segment\n\
+    in_character: Callable characterstic function for including intervals\n\
+    tolerance: resolution for the dyadic intervals in the segmentation\n\
+    signal_tolerance: minimum length interval to be considered for segmentation.\n\
+\n\
+\n\
+Examples:\n\
+>>> from pysegments import Interval\n\
+>>> def in_character(interval):\n\
+...     return Interval(0, 1).contains(interval)\n\
+... \n\
+>>> base = Interval(-5, 5)\n\
+>>> segments = segment(base, in_character, 0, -1)\n\
+>>> segments\n\
+[]\n\
+>>> segments = segment(base, in_character, 0, 1)\n\
+>>> segments\n\
+[Interval(0.000000, 1.000000)]\n\
+>>> def in_character_2(interval):\n\
+...     return interval.inf >= 0.3 and interval.sup <= 0.752\n\
+... \n\
+>>> segments = segment(base, in_character_2, 2, 2)\n\
+>>> segments\n\
+[Interval(0.500000, 0.7500000)]\n\
+>>> segment(base, in_character_2, 3, 2)\n\
+[Interval(0.375000, 0.750000)]\n\
+"
+);
+
+
 static PyObject *
 Py_segment(PyObject *self, PyObject *args, PyObject *kwargs)
 {
@@ -711,7 +843,7 @@ static PyMethodDef SegmentsMethods[] = {
         "segment",
         (PyCFunction) Py_segment,
         METH_VARARGS | METH_KEYWORDS,
-        "Break an interval into dyadic segments."
+        Py_segment_doc
     },
     {nullptr, nullptr, 0, nullptr} /* sentinel */
 };

@@ -27,3 +27,9 @@ def test_segment_function_zero():
     segments = segment(test_interval, in_character_fn, 5, 0)
 
     assert len(segments) == 2
+
+def test_segment_function_resolution_2():
+    test_interval = Interval(0, 15.2)
+    segments = segment(test_interval, in_character_fn, 5, 2)
+
+    assert len(segments) == 2
