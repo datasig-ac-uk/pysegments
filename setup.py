@@ -28,6 +28,7 @@ setup(
     description="Tools for performing dyadic segmentation of data.",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
+    packages=["pysegments"],
     package_dir={"pysegments": "pysegments"},
     ext_modules=[
         segments_ext,
