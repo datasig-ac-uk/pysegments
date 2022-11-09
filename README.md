@@ -16,7 +16,6 @@ def char_function(interval):
     return interval.inf >= 0.3 and interval.sup <= 0.752
 
 base = Interval(-5, 5)
-segments = segment(base, char_function, 2, 2)
+segments = segment(base, char_function, 2)
 # segments = [Interval(0.50000, 0.750000)]
 ```
-

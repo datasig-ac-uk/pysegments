@@ -1,0 +1,14 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "scikit-build",
+    "cmake",
+    "ninja; platform_system!='Windows'",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+skip = ["*-musl*", "pp*", "cp3*-*linux_i686"]
+test-requires = ["pytest"]
+test-command = "pytest {project}"

@@ -1,7 +1,7 @@
 /* *************************************************************
 
 Copyright 2010-16 Terry Lyons, Stephen Buckley, Djalil Chafai,
-Greg Gyurkó and Arend Janssen. Substantially modified by Terry
+Greg Gyurkï¿½ and Arend Janssen. Substantially modified by Terry
 Lyons and Hao Ni.
 
 Distributed under the terms of the GNU General Public License,
@@ -21,8 +21,8 @@ Version 3. (See accompanying file License.txt)
 
 /// this enum names the two types of half open interval
 enum IntervalType : int16_t {
-	clopen = '[)', // includes its leftmost value but not its rightmost value
-	opencl = '(]'  // includes its rightmost value but not its leftmost value
+	clopen = 0x5b29, // '[)', // includes its leftmost value but not its rightmost value
+	opencl = 0x285d  // '(]'  // includes its rightmost value but not its leftmost value
 };
 
 /// a comparison operator that always has the contained element as the least element in the interval

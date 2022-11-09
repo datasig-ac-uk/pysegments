@@ -1,7 +1,7 @@
 /* *************************************************************
 
 Copyright 2010-16 Terry Lyons, Stephen Buckley, Djalil Chafai,
-Greg Gyurkó and Arend Janssen. Substantially modified by Terry
+Greg Gyurkï¿½ and Arend Janssen. Substantially modified by Terry
 Lyons and Hao Ni.
 
 Distributed under the terms of the GNU General Public License,
@@ -26,7 +26,7 @@ Version 3. (See accompanying file License.txt)
 
 // WARNING % is not the modulo operator and -3%2 == -1
 
-// WARNING if E1 has a signed type AND non-negative value, AND E1 × 2^E2
+// WARNING if E1 has a signed type AND non-negative value, AND E1 ï¿½ 2^E2
 // is representable in the result type, then that is the resulting value of E1<<E2;
 // otherwise, the behavior is undefined.
 
@@ -202,7 +202,7 @@ public:
 		static const n_t ints[] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66 };
 
 		// tests divisibility by a power of 2
-		auto k_isdivisible = [=](n_t m) -> bool {
+		auto k_isdivisible = [this](n_t m) -> bool {
 			auto ans = (k % int_two_to_int_power(m));
 			return 0 == ans;
 		};

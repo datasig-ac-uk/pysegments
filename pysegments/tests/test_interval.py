@@ -48,10 +48,3 @@ def _f(ab):
     i = min(*ab)
     s = max(*ab)
     return (Interval(*ab), 0.0 <= i and s <= 1.0) 
-
-
-@pytest.mark.parametrize("interval, expected", map(_f, INTERVALS_EP))
-def test_contains(interval, expected, unit_interval):
-    assert unit_interval.contains(interval) == expected
-
-

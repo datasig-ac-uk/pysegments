@@ -1,0 +1,8 @@
+
+### Version 0.2
+  - Much improved algorithm
+  - Changed build system to SciKit-Build + CMake for cross-platform compatability
+  - Removed the (fairly redundant) second resolution argument from the segment function.
+
+### Version 0.1
+  - First implementation
