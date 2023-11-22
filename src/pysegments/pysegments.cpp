@@ -13,14 +13,24 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
+
 namespace {
 
+std::vector<segments::interval> py_segment(segments::interval arg,
+                                           segments::predicate_t&& predicate,
+                                           segments::depth_t tol,
+                                           segments::depth_t signal_tol
+                                           ) {
+    auto max_depth = std::max(tol, signal_tol);
+    return segments::segment(arg, std::move(predicate), max_depth);
+}
+
 std::vector<segments::interval> py_segment_two_floats(segments::interval arg,
-        std::function<bool(double, double)> predicate, segments::depth_t max_depth)
+        std::function<bool(double, double)> predicate, segments::depth_t tol, segments::depth_t signal_tol)
 {
     return segments::segment(arg, [predicate](const segments::interval& ivl) {
         return predicate(ivl.inf(), ivl.sup());
-    }, max_depth);
+    }, std::max(tol, signal_tol));
 }
 
 } // namespace
@@ -55,8 +65,8 @@ PYBIND11_MODULE(_segments, m) {
         return segments::interval(self);
     }, "memo"_a);
 
-    m.def("segment", &segments::segment, "interval"_a, "predicate"_a, "max_resolution"_a);
-    m.def("segment", &py_segment_two_floats, "interval"_a, "predicate"_a, "max_resolution"_a);
+    m.def("segment", &py_segment, "interval"_a, "predicate"_a, "tolerance"_a, "signal_tolerance"_a=0);
+    m.def("segment", &py_segment_two_floats, "interval"_a, "predicate"_a, "tolerance"_a, "signal_tolerance"_a=0);
 
 
 }
