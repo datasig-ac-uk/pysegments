@@ -22,7 +22,7 @@ using dyadic_interval = basic_dyadic_interval<clopen, dyadic>;
 using predicate_t = std::function<bool(const interval&)>;
 
 
-std::vector<interval> segment(interval arg, predicate_t predicate, depth_t max_depth);
+std::vector<interval> segment(interval arg, const predicate_t& predicate, depth_t signal_tolerance, depth_t trim_tolerance=0);
 
 
 } // namespace segments

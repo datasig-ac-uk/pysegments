@@ -54,5 +54,5 @@ static void bm_multiple_intervals(benchmark::State& state) {
 }
 
 
-BENCHMARK(bm_single_interval)->DenseRange(1, 25, 1)->Complexity();
-BENCHMARK(bm_multiple_intervals)->DenseRange(1, 25, 1)->Complexity();
+BENCHMARK(bm_single_interval)->DenseRange(1, 20, 1)->Complexity();
+BENCHMARK(bm_multiple_intervals)->DenseRange(1, 20, 1)->Complexity();

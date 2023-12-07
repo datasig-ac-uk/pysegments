@@ -2,7 +2,7 @@
 // Created by user on 07/11/22.
 //
 
-#include "dyadic_searcher.h"
+#include "expanding_searcher.h"
 
 #include <cmath>
 #include <unordered_map>
@@ -34,9 +34,10 @@ TEST(dyadic_search_tests, checks_all_intervals_negative_predicate)
         return false;
     };
 
-    dyadic_searcher search(predicate, 3);
+    ExpandingSearcher search(3, 3);
 
-    auto found = search(interval(0, 1));
+    search.search_interval(interval(0, 1), predicate);
+    auto found = std::move(search).result();
 
     ASSERT_TRUE(found.empty());
 
@@ -65,8 +66,9 @@ TEST(dyadic_search_tests, check_interval_once_positive_predicate)
         return true;
     };
 
-    dyadic_searcher search(predicate, 3);
-    auto found = search(interval(0, 1));
+    ExpandingSearcher search(3, 3);
+    search.search_interval(interval(0, 1), predicate);
+    auto found = std::move(search).result();
 
     ASSERT_EQ(found.size(), 1);
     ASSERT_EQ(found[0], interval(0, 1));
@@ -85,8 +87,9 @@ TEST(dyadic_search_tests, check_025_075_middle_interval)
         return itvl.inf() >= 0.25 && itvl.sup() <= 0.75;
     };
 
-    dyadic_searcher search(predicate, 3);
-    auto found = search(interval(0, 1));
+    ExpandingSearcher search(3, 3);
+    search.search_interval(interval(0, 1), predicate);
+    auto found = std::move(search).result();
 
     ASSERT_EQ(found.size(), 1);
     ASSERT_EQ(found[0], interval(0.25, 0.75));
@@ -106,8 +109,9 @@ TEST(dyadic_search_tests, check_two_distinct_intervals)
                 || (itvl.inf() >= 0.55 && itvl.sup() <= 0.81);
     };
 
-    dyadic_searcher search(predicate, 3);
-    auto found = search(interval(0, 1));
+    ExpandingSearcher search(3, 3);
+    search.search_interval(interval(0, 1), predicate);
+    auto found = std::move(search).result();
 
     ASSERT_EQ(found.size(), 2);
     ASSERT_EQ(found[0].inf(), 0.125);
@@ -138,8 +142,12 @@ TEST(dyadic_search_tests, check_multiple_small_intervals_high_depth)
                 ;
     };
 
-    dyadic_searcher search(predicate, 10);
-    auto found = search(interval(0, 1));
+    ExpandingSearcher search(10, 10);
+    search.search_interval(interval(0, 1), predicate);
+    auto found = std::move(search).result();
+    std::sort(found.begin(), found.end(), [](const auto& l, const auto& r) { return l.inf() < r.inf(); });
+
+
     ASSERT_EQ(found.size(), 13);
 
     for (const auto& counts : hits) {
@@ -165,9 +173,9 @@ TEST(dyadic_search_tests, check_single_irregular_interval_high_depth)
         return (itvl.inf() >= 0.4523 && itvl.sup() <= 0.6923);
     };
 
-    dyadic_searcher search(predicate, 9);
-    auto found = search(interval(0, 1));
-
+    ExpandingSearcher search(9, 9);
+    search.search_interval(interval(0, 1), predicate);
+    auto found = std::move(search).result();
 
     ASSERT_EQ(found.size(), 1);
 }
@@ -180,9 +188,9 @@ TEST(dyadic_search_tests, check_single_interval_scaled_low_depth)
     };
 
 
-    dyadic_searcher search(predicate, 3);
-    auto found = search(interval(0.0, 10.0));
-
+    ExpandingSearcher search(3, 3);
+    search.search_interval(interval(0.0, 10.0), predicate);
+    auto found = std::move(search).result();
 
     ASSERT_EQ(found.size(), 1);
 }
@@ -194,9 +202,11 @@ TEST(dyadic_search_tests, check_single_interval_scaled_high_depth)
     };
 
 
-    dyadic_searcher search(predicate, 10);
+    ExpandingSearcher search(10, 10);
     interval base(0.0, 10.0);
-    auto found = search(interval(0.0, 10.0));
+
+    search.search_interval(interval(0.0, 10.0), predicate);
+    auto found = std::move(search).result();
 
 
     ASSERT_EQ(found.size(), 1);
@@ -225,9 +235,10 @@ TEST(dyadic_search_tests, check_multiple_intervals_scaled_low_depth)
     };
 
 
-    dyadic_searcher search(predicate, 2);
-    auto found = search(interval(0.0, 10.0));
+    ExpandingSearcher search(2, 2);
+    search.search_interval(interval(0.0, 10.0), predicate);
 
+    auto found = std::move(search).result();
     EXPECT_LE(found.size(), 13);
 }
 
@@ -251,8 +262,10 @@ TEST(dyadic_search_tests, check_multiple_intervals_scaled_high_depth)
     };
 
 
-    dyadic_searcher search(predicate, 10);
-    auto found = search(interval(0.0, 10.0));
+    ExpandingSearcher search(10, 10);
+    search.search_interval(interval(0.0, 10.0), predicate);
+    auto found = std::move(search).result();
+
 
     EXPECT_LE(found.size(), 13);
 }

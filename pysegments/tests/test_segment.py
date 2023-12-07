@@ -16,7 +16,7 @@ def in_character_fn(interval, check_intervals=INTERVALS):
     return False
 
 
-
+@pytest.mark.skip("negative dyadic order is no longer supported")
 def test_segment_function_mone():
 
     test_interval = Interval(0, 15.2)
@@ -32,11 +32,13 @@ def test_segment_function_zero():
 
     assert len(segments) == 2
 
+
 def test_segment_function_resolution_3():
     test_interval = Interval(0, 15.2)
     segments = segment(test_interval, in_character_fn, 3)
 
     assert len(segments) == 2
+
 
 def test_segment_function_resolution_5():
     test_interval = Interval(0, 15.2)

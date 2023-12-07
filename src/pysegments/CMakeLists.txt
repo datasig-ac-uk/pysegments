@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.21)
+cmake_minimum_required(VERSION 3.21)
 
 
 
@@ -12,7 +12,9 @@ target_link_libraries(pysegments PRIVATE
         segments
         pybind11::pybind11)
 
-set_target_properties(pysegments PROPERTIES LIBRARY_OUTPUT_NAME _segments)
+set_target_properties(pysegments PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/pysegments
+        LIBRARY_OUTPUT_NAME _segments)
 
 install(TARGETS pysegments
         LIBRARY DESTINATION pysegments

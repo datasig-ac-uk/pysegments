@@ -1,15 +1,13 @@
-cmake_minimum_required(VERSION 2.21)
+cmake_minimum_required(VERSION 3.21)
 
 option(SEGMENTS_BUILD_TESTS "Build tests for segments" ON)
 
 add_library(segments STATIC
         segments.h
-        dyadic_searcher.cpp
-        dyadic_searcher.h
-        scaled_predicate.cpp
-        scaled_predicate.h
         segment.cpp
-        )
+        expanding_searcher.cpp
+        expanding_searcher.h
+)
 
 
 target_include_directories(segments PUBLIC
