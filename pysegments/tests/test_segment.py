@@ -9,6 +9,7 @@ INTERVALS = (
     Interval(10.14159, 12.28318)
 )
 
+
 def in_character_fn(interval, check_intervals=INTERVALS):
     for ivl in check_intervals:
         if ivl.inf <= interval.inf and interval.sup <= ivl.sup:
